@@ -18,7 +18,7 @@ app.use('/auth', authRouter);
 app.use(protect);
 app.use('/todos', taskRouter);
 
-app.listen(5000, () => console.log('Server running on port 5000'));
+app.listen(3000, () => console.log('Server running on port 5000'));
 
 
 
