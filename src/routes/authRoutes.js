@@ -21,7 +21,11 @@ authRouter.post("/login", async (req, res) => {
   
     console.log(user);
     const isMatch = await bcrypt.compare( password, user.hashedPassword);
-    if(isMatch) return res.json({massage: "Matched"});
+    if(isMatch){
+        const token = jwt.sign({username}, 'secret');
+        return res.json({token});
+
+    }
     res.json({message: "Incorrect"})
 
 
