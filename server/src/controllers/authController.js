@@ -33,7 +33,13 @@ const login = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
         const token = jwt.sign({ username }, "secret");
-        res.json({ msg: "Login successful", token });
+        res.cookie("token", token, {
+            httpOnly: true,   // Prevents JavaScript from accessing the cookie
+            secure: true,    // Set to `true` if using HTTPS (you can keep `false` for HTTP during dev)
+            sameSite: "None",  // Helps prevent CSRF attacks
+            maxAge: 24 * 60 * 60 * 1000, // 1 day expiration
+        })
+        res.json({ msg: "Login successful" });
     } catch (error) {
         res.status(500).json({ msg: "Server error", error });
     }
