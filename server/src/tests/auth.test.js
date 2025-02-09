@@ -38,7 +38,7 @@ describe("Auth Tests", () => {
     expect(response.body.msg).toBe("Username already exists. Please use a different username.");
   });
 
-  test("should login successfully", async () => {
+  test("should login successfully and set cookie", async () => {
     await request(app).post("/auth/register").send({
       username: "mobasserazaman",
       password: "test1",
@@ -50,6 +50,8 @@ describe("Auth Tests", () => {
     });
 
     expect(response.body.msg).toBe("Login successful");
+    expect(response.headers["set-cookie"]).toBeTruthy();
+
   });
 
   test("should fail to login", async () => {
