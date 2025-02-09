@@ -8,7 +8,7 @@ const User = require("./models/userModel");
 const cookieParser = require("cookie-parser");
 require('dotenv').config();
 
-connectDB();
+if(process.env.NODE_ENV !== "test") connectDB();
 const app = express();
 app.use(cookieParser());   // 👈 Parse cookies automatically ✅
 
@@ -26,7 +26,9 @@ app.use('/auth', authRouter);
 app.use(protect);
 app.use('/todos', taskRouter);
 
-app.listen(5000, () => console.log('Server running on port 5000'));
+if(process.env.NODE_ENV !== "test") app.listen(5000, () => console.log('Server running on port 5000'));
+
+module.exports = app;
 
 
 
