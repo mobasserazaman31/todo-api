@@ -45,6 +45,16 @@ const login = async (req, res) => {
     }
 }
 
+const logout = (req, res) => {
+    res.clearCookie("token", {
+      httpOnly: true, // Ensures cookie can't be accessed via JavaScript
+      secure: true, 
+      sameSite: "None", // Protects against CSRF
+    });
+  
+    return res.status(200).json({ message: "Logged out successfully" });
+  };
+  
 
 
-module.exports = { register, login };
+module.exports = { register, login, logout };

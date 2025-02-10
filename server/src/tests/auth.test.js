@@ -67,4 +67,20 @@ describe("Auth Tests", () => {
 
     expect(response.body.msg).toBe("Invalid credentials");
   });
+
+  test("should logout", async () => {
+    await request(app).post("/auth/register").send({
+      username: "mobasserazaman",
+      password: "test1",
+
+    });
+    await request(app).post("/auth/login").send({
+      username: "mobasserazaman",
+      password: "test1234",
+    });
+
+    const response = await request(app).post("/auth/logout");
+
+    expect(response.headers["set-cookie"]).toBeUndefined();
+  });
 });
