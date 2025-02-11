@@ -6,6 +6,7 @@ const connectDB = require("../src/config/db");
 const cors = require("cors")
 const User = require("./models/userModel");
 const cookieParser = require("cookie-parser");
+const verifyAuth = require('./routes/verifyAuth');
 require('dotenv').config();
 
 if(process.env.NODE_ENV !== "test") connectDB();
@@ -15,6 +16,7 @@ app.use(cookieParser());   // 👈 Parse cookies automatically ✅
 app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
 
 
+app.use('/verify-auth', verifyAuth);
 
 app.get("/", async (req, res) => {
     const users = await User.find({});

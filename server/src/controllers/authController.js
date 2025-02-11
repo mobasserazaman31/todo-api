@@ -35,26 +35,28 @@ const login = async (req, res) => {
         const token = jwt.sign({ username }, "secret");
         res.cookie("token", token, {
             httpOnly: true,   // Prevents JavaScript from accessing the cookie
-            secure: true,    // Set to `true` if using HTTPS (you can keep `false` for HTTP during dev)
-            sameSite: "None",  // Helps prevent CSRF attacks
-            maxAge: 24 * 60 * 60 * 1000, // 1 day expiration
+            secure: false,    // Set to `true` if using HTTPS (you can keep `false` for HTTP during dev)
+            sameSite: "Lax",  // Helps prevent CSRF attacks
         })
-        res.json({ msg: "Login successful" });
+        res.json({ msg: "Login successful", user: { username: user.username, tasks: user.tasks } });
     } catch (error) {
         res.status(500).json({ msg: "Server error", error });
     }
 }
 
 const logout = (req, res) => {
+    console.log(req.headers.cookie); // Check if "token" exists
+
     res.clearCookie("token", {
-      httpOnly: true, // Ensures cookie can't be accessed via JavaScript
-      secure: true, 
-      sameSite: "None", // Protects against CSRF
+        httpOnly: true, // Ensures cookie can't be accessed via JavaScript
+        secure: false,
+        sameSite: "Lax", // Protects against CSRF
     });
-  
+
+
     return res.status(200).json({ message: "Logged out successfully" });
-  };
-  
+};
+
 
 
 module.exports = { register, login, logout };
